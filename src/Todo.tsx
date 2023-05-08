@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoList from "./components/TodoList";
 import AddTodoModal from "./components/AddTodoModal";
 import EditTodoModal from "./components/EditTodoModal";
@@ -16,7 +16,12 @@ const Todo: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
-
+  const [countTodo, setCountTodo] = useState(0);
+  const [storedCheckbox, setstoredCheckbox] = useState("");
+  useEffect(() => {
+    let storedCheckbox = localStorage.getItem("checkedItem");
+    setstoredCheckbox(storedCheckbox);
+  });
   const navigate = useNavigate();
   const logout = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,11 +35,14 @@ const Todo: React.FC = () => {
       text: text,
       completed: false,
     };
+
+    setCountTodo(countTodo + 1);
     setTodos([...todos, todo]);
   };
 
   const deleteTodo = (id: number) => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setCountTodo(countTodo - 1);
     setTodos(updatedTodos);
   };
 
@@ -61,7 +69,7 @@ const Todo: React.FC = () => {
     );
     setTodos(updatedTodos);
   };
-
+  localStorage.setItem("countTodo", countTodo.toString());
   return (
     <div>
       <h1>Todo App</h1>
@@ -86,6 +94,11 @@ const Todo: React.FC = () => {
           onUpdateTodo={updateTodo}
         />
       )}
+      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+        <p>Total Task : {countTodo} </p>
+        <p>Completed : {storedCheckbox}</p>
+        <p>Not Completed : {countTodo - storedCheckbox}</p>
+      </div>
       <div>
         <button onClick={logout}>Logout</button>
       </div>
