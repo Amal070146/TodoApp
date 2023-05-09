@@ -19,8 +19,11 @@ const Todo: React.FC = () => {
   const [countTodo, setCountTodo] = useState(0);
   const [storedCheckbox, setstoredCheckbox] = useState("");
   useEffect(() => {
-    let storedCheckbox = localStorage.getItem("checkedItem");
+    const storedCheckbox = localStorage.getItem("checkedItem");
     setstoredCheckbox(storedCheckbox);
+      if (countTodo == 0) {
+        setstoredCheckbox(0);
+      }
   });
   const navigate = useNavigate();
   const logout = (e: React.FormEvent) => {
