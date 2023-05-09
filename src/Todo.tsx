@@ -17,13 +17,15 @@ const Todo: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
   const [countTodo, setCountTodo] = useState(0);
-  const [storedCheckbox, setstoredCheckbox] = useState("");
+  const [storedCheckbox, setstoredCheckbox] = useState(0);
   useEffect(() => {
     const storedCheckbox = localStorage.getItem("checkedItem");
-    setstoredCheckbox(storedCheckbox);
-      if (countTodo == 0) {
-        setstoredCheckbox(0);
-      }
+    const numb = Number(storedCheckbox);
+    setstoredCheckbox(numb);
+    if (countTodo == 0) {
+      let m = 0;
+      setstoredCheckbox(m);
+    }
   });
   const navigate = useNavigate();
   const logout = (e: React.FormEvent) => {
@@ -100,7 +102,7 @@ const Todo: React.FC = () => {
       <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
         <p>Total Task : {countTodo} </p>
         <p>Completed : {storedCheckbox}</p>
-        <p>Not Completed : {countTodo - storedCheckbox}</p>
+        <p>Not Completed : {countTodo - Number(storedCheckbox)}</p>
       </div>
       <div>
         <button onClick={logout}>Logout</button>

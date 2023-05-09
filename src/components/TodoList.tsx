@@ -27,9 +27,10 @@ const TodoList: React.FC<TodoListProps> = ({
   const [storedCountTodo, setstoredCountTodo] = useState(0);
   useEffect(() => {
     const storedCountTodo = localStorage.getItem("countTodo");
-    setstoredCountTodo(storedCountTodo);
-  
+    const num = Number(storedCountTodo);
+    setstoredCountTodo(num);
   });
+  console.log(storedCountTodo);
 
   const checkboxupdated = (id: number, comp: boolean) => {
     console.log("checked");
