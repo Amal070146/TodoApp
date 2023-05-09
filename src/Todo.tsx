@@ -40,6 +40,7 @@ const Todo: React.FC = () => {
       text: text,
       completed: false,
     };
+    localStorage.setItem("countTodo", countTodo.toString());
 
     setCountTodo(countTodo + 1);
     setTodos([...todos, todo]);
@@ -74,7 +75,6 @@ const Todo: React.FC = () => {
     );
     setTodos(updatedTodos);
   };
-  localStorage.setItem("countTodo", countTodo.toString());
   return (
     <div>
       <h1>Todo App</h1>
