@@ -23,28 +23,47 @@ const TodoList: React.FC<TodoListProps> = ({
   onUpdateStatus,
 }) => {
   const [checkboxes, setCheckboxes] = useState(0);
-
+  const [valuecheck, setvaluecheck] = useState(0);
   const [storedCountTodo, setstoredCountTodo] = useState(0);
   useEffect(() => {
     const storedCountTodo = localStorage.getItem("countTodo");
     const num = Number(storedCountTodo);
     setstoredCountTodo(num);
-  }, [checkboxes]);
-  console.log(storedCountTodo);
+  });
+  localStorage.setItem("valuecheck", valuecheck.toString());
 
   const checkboxupdated = (id: number, comp: boolean) => {
     console.log("checked");
-   
 
-    console.log(id);
-    if (comp == false) {
-      console.log(comp);
-      setCheckboxes(checkboxes + 1);
-    } else {
-      console.log(comp);
-      setCheckboxes(checkboxes - 1);
+    if (storedCountTodo == 0) {
+      setCheckboxes(0);
     }
+    console.log(id);
+    console.log(comp);
     console.log(checkboxes);
+    let check;
+    if (comp == false) {
+      check = checkboxes + 1;
+      console.log(comp, check);
+      setvaluecheck(Number(check));
+      console.log("valuecheck", valuecheck);
+      setCheckboxes(check);
+      if (checkboxes > storedCountTodo) {
+        setCheckboxes(storedCountTodo);
+      }
+    }
+    if (comp == true) {
+      check = checkboxes - 1;
+      setCheckboxes(check);
+      console.log(comp, check);
+      setvaluecheck(Number(check));
+      console.log("valuecheck", valuecheck);
+
+      if (checkboxes < 0) {
+        setCheckboxes(0);
+      }
+    }
+
     localStorage.setItem("checkedItem", checkboxes.toString());
   };
 
@@ -54,11 +73,16 @@ const TodoList: React.FC<TodoListProps> = ({
         <li key={todo.id}>
           <input
             type="checkbox"
+            id="myCheckbox"
             checked={todo.completed}
             onChange={() => onUpdateStatus(todo.id)}
             onClick={() => checkboxupdated(todo.id, todo.completed)}
           />
-          <span className={todo.completed ? "completed" : ""}>{todo.text}</span>
+          <label htmlFor="myCheckbox">
+            <span className={todo.completed ? "" : "completed"}>
+              {todo.text}
+            </span>
+          </label>
           <div className="todolist">
             <button onClick={() => onEdit(todo.id)}>
               <RiEdit2Line />

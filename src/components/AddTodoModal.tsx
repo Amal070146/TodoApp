@@ -29,7 +29,6 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>Add Todo</h2>
         <input
           type="text"
           value={newTodo}
@@ -37,7 +36,7 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({
           placeholder="Enter a new todo..."
         />
         <button onClick={addTodo}>Add</button>
-        <button onClick={onClose}>Cancel</button>
+        
       </div>
     </div>
   );

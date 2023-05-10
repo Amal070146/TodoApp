@@ -26,6 +26,9 @@ const Todo: React.FC = () => {
       let m = 0;
       setstoredCheckbox(m);
     }
+    if (Number(storedCheckbox) < 0) {
+      setstoredCheckbox(0);
+    }
   });
   const navigate = useNavigate();
   const logout = (e: React.FormEvent) => {
@@ -41,7 +44,7 @@ const Todo: React.FC = () => {
       completed: false,
     };
     localStorage.setItem("countTodo", countTodo.toString());
-
+    console.log(showAddModal);
     setCountTodo(countTodo + 1);
     setTodos([...todos, todo]);
   };
@@ -50,6 +53,9 @@ const Todo: React.FC = () => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setCountTodo(countTodo - 1);
     setTodos(updatedTodos);
+    if (countTodo == 0) {
+      setstoredCheckbox(0);
+    }
   };
 
   const updateStatus = (id: number) => {
@@ -76,20 +82,25 @@ const Todo: React.FC = () => {
     setTodos(updatedTodos);
   };
   return (
-    <div>
-      <h1>Todo App</h1>
-      <button onClick={() => setShowAddModal(true)}>Add Todo</button>
+    <div className="todoapp">
+      <div className="header">
+        <h1>TODO</h1>
+        <button onClick={logout}>Logout</button>
+      </div>
+      <AddTodoModal isOpen={true} onClose={closeModals} onAddTodo={addTodo} />
+      <div className="taskcount">
+        <p>Current Task : {countTodo} </p>
+        <p>
+          Task Completed : {storedCheckbox} of {countTodo}
+        </p>
+      </div>
       <TodoList
         todos={todos}
         onDelete={deleteTodo}
         onEdit={openEditModal}
         onUpdateStatus={updateStatus}
       />
-      <AddTodoModal
-        isOpen={showAddModal}
-        onClose={closeModals}
-        onAddTodo={addTodo}
-      />
+
       {showEditModal && editTodoId && (
         <EditTodoModal
           isOpen={showEditModal}
@@ -99,14 +110,6 @@ const Todo: React.FC = () => {
           onUpdateTodo={updateTodo}
         />
       )}
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-        <p>Total Task : {countTodo} </p>
-        <p>Completed : {storedCheckbox}</p>
-        <p>Not Completed : {countTodo - Number(storedCheckbox)}</p>
-      </div>
-      <div>
-        <button onClick={logout}>Logout</button>
-      </div>
     </div>
   );
 };

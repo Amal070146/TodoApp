@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import bg from '../assets/bg.jpg'
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -32,8 +31,8 @@ const SignUp: React.FC = () => {
         <form onSubmit={handleSignUp}>
           <div>
             <input
-              placeholder="Email"
-              type="email"
+              placeholder="Username"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
