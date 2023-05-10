@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./todo.css";
 
-
 interface EditTodoModalProps {
   isOpen: boolean;
   todoId: number;
@@ -32,16 +31,18 @@ const EditTodoModal: React.FC<EditTodoModalProps> = ({
 
   return (
     <div className="modal">
-      <div className="modal-content">
+      <div className="modal-content edit">
         <h2>Edit Todo</h2>
-        <input
-          type="text"
-          value={updatedText}
-          onChange={(e) => setUpdatedText(e.target.value)}
-          placeholder="Enter updated todo..."
-        />
-        <button onClick={updateTodo}>Update</button>
-        <button onClick={onClose}>Cancel</button>
+        <div>
+          <input
+            type="text"
+            value={updatedText}
+            onChange={(e) => setUpdatedText(e.target.value)}
+            placeholder="Enter updated todo..."
+          />
+          <button onClick={updateTodo}>Update</button>
+          <button onClick={onClose}>Cancel</button>
+        </div>
       </div>
     </div>
   );

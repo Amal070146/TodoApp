@@ -19,7 +19,7 @@ const Todo: React.FC = () => {
   const [countTodo, setCountTodo] = useState(0);
   const [storedCheckbox, setstoredCheckbox] = useState(0);
   useEffect(() => {
-    const storedCheckbox = localStorage.getItem("checkedItem");
+    const storedCheckbox = localStorage.getItem("valuecheck");
     const numb = Number(storedCheckbox);
     setstoredCheckbox(numb);
     if (countTodo == 0) {
@@ -55,6 +55,9 @@ const Todo: React.FC = () => {
     setTodos(updatedTodos);
     if (countTodo == 0) {
       setstoredCheckbox(0);
+    }
+    if(storedCheckbox+1>countTodo){
+      setstoredCheckbox(countTodo);
     }
   };
 

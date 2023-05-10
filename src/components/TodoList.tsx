@@ -29,8 +29,8 @@ const TodoList: React.FC<TodoListProps> = ({
     const storedCountTodo = localStorage.getItem("countTodo");
     const num = Number(storedCountTodo);
     setstoredCountTodo(num);
+    localStorage.setItem("valuecheck", valuecheck.toString());
   });
-  localStorage.setItem("valuecheck", valuecheck.toString());
 
   const checkboxupdated = (id: number, comp: boolean) => {
     console.log("checked");
@@ -45,18 +45,18 @@ const TodoList: React.FC<TodoListProps> = ({
     if (comp == false) {
       check = checkboxes + 1;
       console.log(comp, check);
-      setvaluecheck(Number(check));
-      console.log("valuecheck", valuecheck);
+      setvaluecheck(check);
+      console.log("valuecheck", check);
       setCheckboxes(check);
-      if (checkboxes > storedCountTodo) {
-        setCheckboxes(storedCountTodo);
+      if (valuecheck > storedCountTodo) {
+        setvaluecheck(storedCountTodo);
       }
     }
     if (comp == true) {
       check = checkboxes - 1;
       setCheckboxes(check);
       console.log(comp, check);
-      setvaluecheck(Number(check));
+      setvaluecheck(check);
       console.log("valuecheck", valuecheck);
 
       if (checkboxes < 0) {

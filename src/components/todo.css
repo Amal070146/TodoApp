@@ -142,6 +142,14 @@ p {
   border-radius: 0px 10px 10px 0px;
 
 }
+
+.edit{
+  display: flex;
+  flex-direction: column;
+}
+.edit>div{
+  display: flex;
+}
 .header > button {
   background-color: #a557d1;
 }
