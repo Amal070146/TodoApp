@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
    const [error, setError] = useState("");
-
+  const navigate = useNavigate();
 
 
    const handleSignUp = (e: React.FormEvent) => {
@@ -22,13 +25,25 @@ const SignUp: React.FC = () => {
        setError("Invalid email or password");
      }
    };
-
+  const handle = () => {
+    
+    console.log(email, password);
+    axios
+      .post(
+        "https://mulearn-internship-task-production.up.railway.app/api/register/",
+        { username: email, password: password }
+      )
+      .then((response) => {
+        console.log(response);
+        navigate("/login");
+      });
+  };
   return (
     <div className="signup">
       <div className="signupinside">
         <h2>Register</h2>
         {error && <p>{error}</p>}
-        <form onSubmit={handleSignUp}>
+        <form >
           <div>
             <input
               placeholder="Username"
@@ -56,7 +71,7 @@ const SignUp: React.FC = () => {
               required
             />
           </div>
-          <button type="submit">Register</button>
+          <button type="submit" onClick={handle}>Register</button>
         </form>
         <div>
           <p>

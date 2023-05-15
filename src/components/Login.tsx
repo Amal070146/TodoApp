@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,23 @@ const Login: React.FC = () => {
       setError("Invalid email or password");
     }
   };
+  const handle = () => {
+    console.log(email,password)
+    axios
+      .post(
+        "https://mulearn-internship-task-production.up.railway.app/api/token/",
+        { username: email, password: password }
+      )
+      .then((response) => {
+        console.log(response)
+        let access = response.data.access
+        access && localStorage.setItem("access",access)
+        if (response.data) {
+          navigate("/home");
+        }
+      });
+      
+  };
   return (
     <div className="signup">
       <div className="signupinside">
@@ -52,7 +70,9 @@ const Login: React.FC = () => {
               required
             />
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" onClick={handle}>
+            Login
+          </button>
         </form>
         <div>
           <p>

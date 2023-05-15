@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './todo.css'
+import axios from 'axios'
 
 interface AddTodoModalProps {
   isOpen: boolean;
@@ -26,6 +27,17 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({
     return null;
   }
 
+  const addtodo = ()=>{
+    const storedAccess = localStorage.getItem("access");
+    console.log(storedAccess)
+axios
+  .post(
+    "https://mulearn-internship-task-production.up.railway.app/api/todo/",
+    { title: newTodo },
+    { headers: { Authorization: `Bearer ${storedAccess}` } }
+  )
+  .then((response) => console.log(response));}
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -35,7 +47,7 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({
           onChange={(e) => setNewTodo(e.target.value)}
           placeholder="Enter a new todo..."
         />
-        <button onClick={addTodo}>Add</button>
+        <button onClick={addtodo}>Add</button>
         
       </div>
     </div>

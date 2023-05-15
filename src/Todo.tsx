@@ -20,6 +20,8 @@ const Todo: React.FC = () => {
   const [storedCheckbox, setstoredCheckbox] = useState(0);
   useEffect(() => {
     const storedCheckbox = localStorage.getItem("valuecheck");
+    const storedAccess = localStorage.getItem("access");
+    console.log(storedAccess);
     const numb = Number(storedCheckbox);
     setstoredCheckbox(numb);
     if (countTodo == 0) {
