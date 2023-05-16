@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import useAuth from "../api/auth";
+import { tokenurl } from "../api";
+import { axiosPrivate } from "../api/api";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const { setAuth }: any = useAuth();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [storedEmail, setStoredEmail] = useState("");
+  const [storedusername, setStoredUsername] = useState("");
   const [storedPassword, setStoredPassword] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
+    const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
-    if (storedEmail && storedPassword) {
-      setStoredEmail(storedEmail);
+    if (storedUsername && storedPassword) {
+      setStoredUsername(storedUsername);
       setStoredPassword(storedPassword);
     }
   }, []);
@@ -21,30 +25,58 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     // Simulating login success/failure
-    if (email === storedEmail && password === storedPassword) {
+    if (username === storedusername && password === storedPassword) {
       // Login success, navigate to home page
       navigate("/home");
     } else {
       // Login failure, display error message
-      setError("Invalid email or password");
+      setError("Invalid username or password");
     }
   };
-  const handle = () => {
-    console.log(email,password)
+  const handle = async () => {
+    console.log(username, password);
     axios
       .post(
         "https://mulearn-internship-task-production.up.railway.app/api/token/",
-        { username: email, password: password }
+        { username: username, password: password }
       )
       .then((response) => {
-        console.log(response)
-        let access = response.data.access
-        access && localStorage.setItem("access",access)
+        console.log(response);
+        let access = response.data.access;
+        access && localStorage.setItem("access", access);
         if (response.data) {
           navigate("/home");
         }
       });
-      
+
+    try {
+      const response = await axiosPrivate.post(
+        tokenurl,
+        JSON.stringify({ username: username, password: password })
+      );
+      console.log(JSON.stringify(response?.data));
+      const accessToken = response?.data?.access;
+      localStorage.setItem("accessToken", accessToken);
+      setAuth({ username, password, accessToken });
+
+      localStorage.clear();
+      localStorage.setItem("access", accessToken);
+      setTimeout(() => {
+        navigate("/home");
+      }, 500);
+      console.log("login successful");
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      if (!error?.response) {
+        console.log("No Server Response");
+      } else if (error.response?.status === 400) {
+        console.log("Missing Username or Password");
+      } else if (error.response?.status === 401) {
+        console.log("Unauthorized");
+      } else {
+        console.log("Login Failed");
+      }
+    }
   };
   return (
     <div className="signup">
@@ -56,8 +88,8 @@ const Login: React.FC = () => {
             <input
               placeholder="Username"
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>

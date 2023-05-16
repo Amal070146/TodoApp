@@ -15,13 +15,13 @@ const AddTodoModal: React.FC<AddTodoModalProps> = ({
 }) => {
   const [newTodo, setNewTodo] = useState("");
 
-  const addTodo = () => {
-    if (newTodo.trim()) {
-      onAddTodo(newTodo.trim());
-      setNewTodo("");
-      onClose();
-    }
-  };
+  // const addTodo = () => {
+  //   if (newTodo.trim()) {
+  //     onAddTodo(newTodo.trim());
+  //     setNewTodo("");
+  //     onClose();
+  //   }
+  // };
 
   if (!isOpen) {
     return null;
@@ -34,7 +34,10 @@ axios
   .post(
     "https://mulearn-internship-task-production.up.railway.app/api/todo/",
     { title: newTodo },
-    { headers: { Authorization: `Bearer ${storedAccess}` } }
+    {
+      headers: { Authorization: `Bearer ${storedAccess}`}
+      
+    }
   )
   .then((response) => console.log(response));}
 

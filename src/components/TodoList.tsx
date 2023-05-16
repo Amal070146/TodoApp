@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine, RiEdit2Line } from "react-icons/ri";
 
 import "./todo.css";
+import { axiosPrivate } from "../api/api";
+import { todourl } from "../api/index";
+import { AxiosError } from "axios";
 
 interface Todo {
   id: number;
@@ -22,15 +25,10 @@ const TodoList: React.FC<TodoListProps> = ({
   onEdit,
   onUpdateStatus,
 }) => {
+  const [todoes, setTodos] = useState<Todo[]>([]);
   const [checkboxes, setCheckboxes] = useState(0);
   const [valuecheck, setvaluecheck] = useState(0);
   const [storedCountTodo, setstoredCountTodo] = useState(0);
-  useEffect(() => {
-    const storedCountTodo = localStorage.getItem("countTodo");
-    const num = Number(storedCountTodo);
-    setstoredCountTodo(num);
-    localStorage.setItem("valuecheck", valuecheck.toString());
-  });
 
   const checkboxupdated = (id: number, comp: boolean) => {
     console.log("checked");
@@ -63,13 +61,41 @@ const TodoList: React.FC<TodoListProps> = ({
         setCheckboxes(0);
       }
     }
-
+    const getTodo = async () => {
+      try {
+       
+        const response = await axiosPrivate.get(todourl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + storedAccess,
+          },
+        });
+        const todo: any = response?.data;
+        console.log(todo);
+        setTodos(todo);
+        console.log(todoes);
+      } catch (err: unknown) {
+        const error = err as AxiosError;
+        if (error?.response) {
+          console.log(error.response);
+          //notify3();
+        }
+      }
+    };
+    const storedAccess = localStorage.getItem("access");
+    useEffect(() => {
+      getTodo(); 
+      const storedCountTodo = localStorage.getItem("countTodo");
+      const num = Number(storedCountTodo);
+      setstoredCountTodo(num);
+    }, []);
+    localStorage.setItem("valuecheck", valuecheck.toString());
     localStorage.setItem("checkedItem", checkboxes.toString());
   };
 
   return (
     <ol>
-      {todos.map((todo) => (
+      {todoes.map((todo) => (
         <li key={todo.id}>
           <input
             type="checkbox"
