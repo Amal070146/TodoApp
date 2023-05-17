@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./todo.css";
+import styles from './edit.module.css'
 
 interface EditTodoModalProps {
   isOpen: boolean;
-  todoId: number;
+  todoId: string;
   initialText: string;
   onClose: () => void;
-  onUpdateTodo: (id: number, text: string) => void;
+  onUpdateTodo: (id: string, text: string) => void;
 }
 
 const EditTodoModal: React.FC<EditTodoModalProps> = ({
@@ -30,8 +30,8 @@ const EditTodoModal: React.FC<EditTodoModalProps> = ({
   }
 
   return (
-    <div className="modal">
-      <div className="modal-content edit">
+    <div className={styles.model}>
+      <div className={styles.modalcontent}>
         <h2>Edit Todo</h2>
         <div>
           <input
