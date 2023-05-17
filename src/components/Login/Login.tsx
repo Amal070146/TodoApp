@@ -1,10 +1,10 @@
 import styles from "./login.module.css";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth"
 import { axiosPrivate } from "../../api/api";
 
 const LOGIN_URL = "token/";
