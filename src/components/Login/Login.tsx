@@ -108,7 +108,7 @@ export const Login = () => {
             <ToastContainer />
             <div className={styles.signup_link}>
               Not a user?{" "}
-              <a className={styles.anchorlogin} href="/register">
+              <a className={styles.anchorlogin} href="/signup">
                 Signup now
               </a>
             </div>
