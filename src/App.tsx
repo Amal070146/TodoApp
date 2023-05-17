@@ -1,24 +1,30 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
-import HomePage from "./Todo";
+import { Route, Routes } from "react-router-dom";
+import Todo from "./components/Todo/Todo";
+import { Register } from "./components/Signup/Signup";
+import { Login } from "./components/Login/Login";
+import { ErrorPage } from "./components/ErrorPage/ErrorPage";
+import Layout from "./Layout/Layout";
+import RequireAuth from "./utils/RequireAuth";
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <SignUp />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/home",
-      element: <HomePage />,
-    },
-  ]);
-  return <RouterProvider router={router} />;
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* we want to protect these routes */}
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Todo />} />
+          <Route path="/todo" element={<Todo />} />
+        </Route>
+
+        {/* catch all */}
+        <Route path="/*" element={<ErrorPage />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;

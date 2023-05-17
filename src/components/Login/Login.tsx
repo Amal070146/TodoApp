@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { axiosPrivate } from "../../api/api";
 
-
 const LOGIN_URL = "token/";
 
 export const Login = () => {
